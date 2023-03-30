@@ -1,36 +1,33 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export class ContactsList extends Component {
-  creatMarcup = objContacts => {
+export const ContactsList = ({ contacts, filter, handleDelete }) => {
+  const creatMarcup = objContacts => {
     return objContacts.map(({ name, id, number }) => {
       return (
         <li key={id} id={id}>
           <span>{name}:</span>
           <span>{number}</span>
-          <button onClick={this.props.handleDelete}>Delete</button>
+          <button onClick={handleDelete}>Delete</button>
         </li>
       );
     });
   };
-  renderFilterMarcup = () => {
-    const newArr = this.props.contacts.filter(({ name }) => {
+
+  const renderFilterMarcup = () => {
+    const newArr = contacts.filter(({ name }) => {
       const modifiedName = name.toLowerCase();
-      return modifiedName.includes(this.props.filter.toLowerCase());
+      return modifiedName.includes(filter.toLowerCase());
     });
     return newArr;
   };
-
-  render() {
-    return (
-      <ul>
-        {this.props.filter === ''
-          ? this.creatMarcup(this.props.contacts)
-          : this.creatMarcup(this.renderFilterMarcup())}
-      </ul>
-    );
-  }
-}
+  return (
+    <ul>
+      {filter === ''
+        ? creatMarcup(contacts)
+        : creatMarcup(renderFilterMarcup())}
+    </ul>
+  );
+};
 
 ContactsList.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.object),
